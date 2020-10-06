@@ -58,6 +58,9 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 const authRoutes = require('./routes/auth.routes')
 app.use('/api', authRoutes);
 
+const complexRoutes = require('./routes/complex.routes')
+app.use('/api', complexRoutes);
+
 const index = require('./routes/index');
 app.use('/', index);
 

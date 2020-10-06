@@ -23,7 +23,7 @@ const UserSchema = new Schema(
     },
     userType: {
       type: String,
-      enum: ['Gobernante','empaquetador','admin','revisador','direccion']
+      enum: ['gobernanta','empaquetador','admin','revisador','direccion']
     }
   },
   {

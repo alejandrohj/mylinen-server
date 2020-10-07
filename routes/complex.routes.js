@@ -19,4 +19,18 @@ router.post('/complex/create',(req,res)=>{
     });
 })
 
+router.get('/complexes',(req,res)=>{
+  console.log('aaa')
+  ComplexModel.find()
+    .then((complexes)=>{
+      res.status(200).json(complexes)
+    }).catch((err) => {
+      res.status(500).json({
+        error: 'Cannot update complex',
+        message: err
+      })
+      return;
+    });
+})
+
 module.exports = router;

@@ -20,7 +20,6 @@ router.post('/complex/create',(req,res)=>{
 })
 
 router.get('/complexes',(req,res)=>{
-  console.log('aaa')
   ComplexModel.find()
     .then((complexes)=>{
       res.status(200).json(complexes)

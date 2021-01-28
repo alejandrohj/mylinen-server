@@ -7,7 +7,7 @@ const { isLoggedIn } = require('../helpers/auth-helper');
 const UserModel = require('../models/user.Model');
 
 router.post('/signup', (req, res) => {
-  const {userName, firstName, lastName, email, password, userType} = req.body;
+  const {userName, firstName, lastName, email, password, userType, complex} = req.body;
   if (!userName) {
     res.status(500)
       .json({
@@ -53,7 +53,9 @@ router.post('/signup', (req, res) => {
     .then((salt) => {
       bcrypt.hash(password, salt)
           .then((passwordHash) => {
-            UserModel.create({email, userName, firstName,lastName, passwordHash, userType})
+            let complexId
+            complex?  complexId= complex._id : complexId =null;
+            UserModel.create({email, userName, firstName,lastName, passwordHash, userType, complex: complexId})
               .then((user) => {
                 user.passwordHash = "***";
                 req.session.loggedInUser = user;
@@ -155,14 +157,13 @@ router.get('/user', isLoggedIn, (req, res, next) => {
 
 router.post('/user/:id/edit', isLoggedIn, (req, res) => {
   console.log('editing',req.body)
-  const {name, address} = req.body;
-  console.log(name, address, 'name and address')
-  UserModel.findByIdAndUpdate(req.params.id, {$set: {name,address}})
+  const {firstName,email,userType,complex} = req.body;
+
+  UserModel.findByIdAndUpdate(req.params.id, {$set: {firstName,email,userType,complex: complex? complex: null}})
     .then((user) => {
-      req.session.loggedInUser.name = name;
-      req.session.loggedInUser.address = address;
       res.status(200).json(user)
-    }).catch((err) => {
+    })
+    .catch((err) => {
       res.status(500).json({
         error: 'Cannot update user',
         message: err
@@ -170,5 +171,19 @@ router.post('/user/:id/edit', isLoggedIn, (req, res) => {
       return;
     });
 })
+
+router.get('/user/all', isLoggedIn, (req, res, next) => {
+  UserModel.find()
+  .populate('complex')
+    .then((data)=>{
+      res.status(200).json(data)
+    }).catch((err) => {
+      res.status(500).json({
+        error: 'Cannot find any user',
+        message: err
+      })
+      return;
+    });
+});
 
 module.exports = router;

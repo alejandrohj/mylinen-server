@@ -24,6 +24,10 @@ const UserSchema = new Schema(
     userType: {
       type: String,
       enum: ['gobernanta','empaquetador','admin','revisador','direccion']
+    },
+    complex: {
+      type: Schema.Types.ObjectId,
+      ref: 'complex'
     }
   },
   {

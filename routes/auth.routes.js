@@ -186,4 +186,22 @@ router.get('/user/all', isLoggedIn, (req, res, next) => {
     });
 });
 
+router.post('/user/:id/disabled', isLoggedIn, (req, res) => {
+  UserModel.findById(req.params.id)
+  .then((response)=>{
+    const {disable} = response.data;
+    UserModel.findByIdAndUpdate(req.params.id, {$set: {disable: !disable? true: false}})
+    .then((user) => {
+      res.status(200).json(user)
+    })
+  })
+    .catch((err) => {
+      res.status(500).json({
+        error: 'Cannot update user',
+        message: err
+      })
+      return;
+    });
+})
+
 module.exports = router;

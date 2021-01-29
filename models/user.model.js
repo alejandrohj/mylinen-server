@@ -28,6 +28,10 @@ const UserSchema = new Schema(
     complex: {
       type: Schema.Types.ObjectId,
       ref: 'complex'
+    },
+    disable: {
+      type: Boolean,
+      default: false
     }
   },
   {

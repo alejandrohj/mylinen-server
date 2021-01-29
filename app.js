@@ -19,11 +19,11 @@ app.use(session({
   saveUninitialized: true,
   resave: true,
   cookie: {
-    maxAge: 60*60*24*1000
+    maxAge: 60*60*24*1000*14
   },
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
-    ttl: 24 * 60 * 60,
+    ttl: 24 * 60 * 60 *14,
     autoRemove: 'disabled',
   })
 }));  

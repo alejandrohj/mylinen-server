@@ -119,6 +119,7 @@ router.post('/signin', (req, res) => {
               user.passwordHash = "***";
               req.session.loggedInUser = user;
               console.log('Signin succes!', req.session)
+              console.log(user)
               res.status(200).json(user);
             }
             else {
@@ -186,22 +187,15 @@ router.get('/user/all', isLoggedIn, (req, res, next) => {
     });
 });
 
-router.post('/user/:id/disabled', isLoggedIn, (req, res) => {
+router.put('/user/:id/disabled', isLoggedIn, (req, res) => {
   UserModel.findById(req.params.id)
   .then((response)=>{
-    const {disable} = response.data;
-    UserModel.findByIdAndUpdate(req.params.id, {$set: {disable: !disable? true: false}})
+    console.log(response)
+    UserModel.findByIdAndUpdate(req.params.id, {$set: {disable: !response.disable? true: false}})
     .then((user) => {
       res.status(200).json(user)
     })
   })
-    .catch((err) => {
-      res.status(500).json({
-        error: 'Cannot update user',
-        message: err
-      })
-      return;
-    });
 })
 
 module.exports = router;

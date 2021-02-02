@@ -7,30 +7,45 @@ const OrderSchema = new Schema(
       type: complexId,
       ref: 'complex'
     },
+    CreatedBy : {
+      type: userId,
+      ref: 'user'
+    },
     linenPendingToRewash:[
       {
-        linenName: String,
-        linenQuantity: Number,
+        laundry: {
+          type: Schema.Types.ObjectId,
+          ref: 'laundry'
+        },
+        quantity: Number,
       }
     ],
     linenOrdered: [
       {
-        linenName: String,
-        linenQuantity: Number,
-        linenPrice: Number,
+        laundry: {
+          type: Schema.Types.ObjectId,
+          ref: 'laundry'
+        },
+        quantity: Number,
         subtotal: Number
       }
     ],
     allLinenSendedToHotel: [
       {
-        linenName: String,
-        linenQuantity: Number,
+        laundry: {
+          type: Schema.Types.ObjectId,
+          ref: 'laundry'
+        },
+        quantity: Number,
       }
     ],
     linenToRewash: [
       {
-        linenName: String,
-        linenQuantity: Number,
+        laundry: {
+          type: Schema.Types.ObjectId,
+          ref: 'laundry'
+        },
+        quantity: Number,
       }
     ],
     status: {

@@ -12,8 +12,11 @@ const ComplexSchema = new Schema(
     },
     linen:[
       {
-        linenName: String,
-        linenPrice : Number
+        laundry: {
+          type: Schema.Types.ObjectId,
+          ref: 'laundry'
+        },
+        price: Number
       }
     ],
     services:{

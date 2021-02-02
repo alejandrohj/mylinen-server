@@ -3,7 +3,10 @@ const router = express.Router();
 
 const ComplexModel = require('../models/complex.model');
 
-router.post('/complex/create',(req,res)=>{
+
+const { isLoggedIn } = require('../helpers/auth-helper');
+
+router.post('/complex/create',isLoggedIn,(req,res)=>{
   console.log('complex')
   const {name,adress,linen, services} = req.body;
   console.log(name)
@@ -19,7 +22,7 @@ router.post('/complex/create',(req,res)=>{
     });
 })
 
-router.get('/complexes',(req,res)=>{
+router.get('/complexes',isLoggedIn,(req,res)=>{
   ComplexModel.find()
     .then((complexes)=>{
       res.status(200).json(complexes)
@@ -31,5 +34,25 @@ router.get('/complexes',(req,res)=>{
       return;
     });
 })
+
+router.get('/complex/:id/details',isLoggedIn,(req,res)=>{
+  ComplexModel.findById(req.params.id)
+  .populate({
+    path:'linen.laundry'
+  })
+    .then((complex)=>{
+      res.status(200).json(complex)
+    })
+})
+
+router.post('/complex/:id/updatelinen',isLoggedIn,(req,res)=>{
+  const {linen} = req.body;
+  ComplexModel.findByIdAndUpdate(req.params.id,{$set:{linen:linen}})
+    .then((complex)=>{
+      res.status(200).json(complex)
+    })
+})
+
+
 
 module.exports = router;

@@ -3,12 +3,12 @@ const {Schema, model} = require('mongoose');
 
 const OrderSchema = new Schema(
   {
-    complex: {
-      type: complexId,
+    complexId: {
+      type: Schema.Types.ObjectId,
       ref: 'complex'
     },
     CreatedBy : {
-      type: userId,
+      type: Schema.Types.ObjectId,
       ref: 'user'
     },
     linenPendingToRewash:[

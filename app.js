@@ -63,6 +63,9 @@ app.use('/api', complexRoutes);
 const laundriesRoutes = require('./routes/laundries.routes')
 app.use('/api', laundriesRoutes);
 
+const ordersRoutes = require('./routes/orders.routes')
+app.use('/api', ordersRoutes);
+
 const index = require('./routes/index');
 app.use('/', index);
 

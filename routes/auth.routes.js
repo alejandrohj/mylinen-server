@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const { isLoggedIn } = require('../helpers/auth-helper');
 
-const UserModel = require('../models/user.Model');
+const UserModel = require('../models/user.model');
 
 router.post('/signup', (req, res) => {
   const {userName, firstName, lastName, email, password, userType, complex} = req.body;

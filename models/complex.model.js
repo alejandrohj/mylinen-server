@@ -16,7 +16,8 @@ const ComplexSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: 'laundry'
         },
-        price: Number
+        price: Number,
+        EPC: Number
       }
     ],
     services:{

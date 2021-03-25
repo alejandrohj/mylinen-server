@@ -11,7 +11,7 @@ router.post('/signup', (req, res) => {
   if (!userName) {
     res.status(500)
       .json({
-        error: 'Please enter a username'
+        error: 'Por favor introduce un email válido'
       });
     return;  
   }
@@ -19,7 +19,7 @@ router.post('/signup', (req, res) => {
   if (!email) {
     res.status(500)
       .json({
-        error: 'Please enter an email'
+        error: 'Porfavor introduce email'
       });
     return;  
   }
@@ -27,7 +27,7 @@ router.post('/signup', (req, res) => {
   if (!password) {
     res.status(500)
       .json({
-        error: 'Please enter a password'
+        error: 'Porfavor introduce contraseña'
       });
     return;  
   }
@@ -36,7 +36,7 @@ router.post('/signup', (req, res) => {
   if (!emailRegEx.test(email)) {
     res.status(500)
       .json({
-        error: 'Please enter a valid email'
+        error: 'Por favor introduce un email valido'
       })
     return;
   }
@@ -89,7 +89,7 @@ router.post('/signin', (req, res) => {
   if (!email) {
     res.status(500)
       .json({
-        error: 'Please enter your email'
+        error: 'Porfavor introduce tu email'
       });
     return;
   }
@@ -97,7 +97,7 @@ router.post('/signin', (req, res) => {
   if (!password) {
     res.status(500)
       .json({
-        error: 'Please enter your password'
+        error: 'Porfavor introduce tu contraseña'
       });
     return;
   }
@@ -106,7 +106,7 @@ router.post('/signin', (req, res) => {
     if (!myRegex.test(email)) {
       res.status(500)
         .json({
-          error: 'Please enter a valid email',
+          error: 'Porfavor introduce un email valido',
         })
       return;  
     }
@@ -125,20 +125,20 @@ router.post('/signin', (req, res) => {
             else {
               res.status(500)
                 .json({
-                  error: 'Password doesn\'t match, please try again'
+                  error: 'La contraseña no coincide porfavor intentalo de nuevo'
                 })
               return;
             }
           }).catch(() => {
             res.status(500)
               .json({
-                error: 'Password doesn\'t match, please try again'
+                error: 'La contraseña no coincide porfavor intentalo de nuevo'
               })
             return;
           });
       }).catch(() => {
         res.status(500).json({
-          error: 'Email doesn\'t match, please try again'
+          error: 'Ese email no está registrado, por favor introducelo de nuevo'
         })
         return;
       });

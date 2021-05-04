@@ -12,7 +12,8 @@ const LaundrySchema = new Schema(
     category: {
       type: String,
       enum: ['linen','clothes']
-    }
+    },
+    rfidId: Number
   },
   {
     timestamps: true

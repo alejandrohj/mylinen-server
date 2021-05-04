@@ -7,7 +7,7 @@ const { isLoggedIn } = require('../helpers/auth-helper');
 const UserModel = require('../models/user.model');
 
 router.post('/signup', (req, res) => {
-  const {userName, firstName, lastName, email, password, userType, complex} = req.body;
+  const {userName, firstName, lastName, email, password, userType, complex, rfidComplexId} = req.body;
   if (!userName) {
     res.status(500)
       .json({
@@ -55,7 +55,7 @@ router.post('/signup', (req, res) => {
           .then((passwordHash) => {
             let complexId
             complex?  complexId= complex._id : complexId =null;
-            UserModel.create({email, userName, firstName,lastName, passwordHash, userType, complex: complexId})
+            UserModel.create({email, userName, firstName,lastName, passwordHash, userType, complex: complexId, rfidComplexId})
               .then((user) => {
                 user.passwordHash = "***";
                 req.session.loggedInUser = user;

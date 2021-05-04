@@ -14,8 +14,8 @@ router.get('/laundries',isLoggedIn, (req, res, next) => {
 });
 
 router.post('/laundry/create',isLoggedIn, (req, res, next) => {
-  const {name, code} = req.body;
-  LaundryModel.create({name, code})
+  const {name, code, rfidId} = req.body;
+  LaundryModel.create({name, code, rfidId})
     .then((laundries)=>{
       res.status(200).json(laundries);
     })

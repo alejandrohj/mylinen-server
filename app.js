@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('./configs/database.config')
+const axios = require('axios');
 
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -73,7 +74,5 @@ app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
   res.sendFile(__dirname + "/public/index.html");
 });
-
-
 
 module.exports = app;

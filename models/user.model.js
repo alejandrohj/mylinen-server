@@ -29,6 +29,9 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'complex'
     },
+    rfidComplexId: {
+      type: Number
+    },
     disable: {
       type: Boolean,
       default: false

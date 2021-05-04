@@ -24,7 +24,8 @@ const ComplexSchema = new Schema(
       type: String,
       enum: ['laundry','renting'],
       default: 'laundry'
-    }
+    },
+    rfidId: Number
   },
   {
     timestamps: true

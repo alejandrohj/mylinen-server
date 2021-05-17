@@ -53,13 +53,13 @@ router.put('/articulos/all', (req, res, next) => {
 
 router.put('/serials/all', (req, res, next) => {
   const {serials} = req.body;
-  const serialsDiv = serials.length/10;
+  const serialsDiv = serials.length/3;
   const serials1 = serials.slice(0,serialsDiv)
   const serials2 = serials.slice(serialsDiv,serialsDiv*2)
   const serials3 = serials.slice(serialsDiv*2,serialsDiv*3)
+  res.status(200);
   SerialsModel.deleteMany({})
   .then(()=>{
-    res.status(200);
     SerialsModel.insertMany(serials1)
     .then((DBResponse)=>{
       SerialsModel.insertMany(serials2)

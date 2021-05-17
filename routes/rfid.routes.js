@@ -53,13 +53,22 @@ router.put('/articulos/all', (req, res, next) => {
 
 router.put('/serials/all', (req, res, next) => {
   const {serials} = req.body;
-  console.log(serials)
+  const serialsDiv = serials.length/10;
+  const serials1 = serials.slice(0,serialsDiv)
+  const serials2 = serials.slice(serialsDiv,serialsDiv*2)
+  const serials3 = serials.slice(serialsDiv*2,serialsDiv*3)
   SerialsModel.deleteMany({})
   .then(()=>{
-    SerialsModel.insertMany(serials)
+    SerialsModel.insertMany(serials1)
     .then((DBResponse)=>{
-      console.log('serials created succesfully')
-      res.status(200).json(DBResponse.data);
+      SerialsModel.insertMany(serials2)
+      .then((DBResponse)=>{
+        SerialsModel.insertMany(serials3)
+          .then((DBResponse)=>{
+            console.log('serials created succesfully')
+            res.status(200).json(DBResponse.data);
+          })
+      })
     })
   })
 });

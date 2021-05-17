@@ -13,7 +13,7 @@ const LaundrySchema = new Schema(
       type: String,
       enum: ['linen','clothes']
     },
-    rfidId: Number
+    rfidid: Number
   },
   {
     timestamps: true

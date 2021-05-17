@@ -39,8 +39,8 @@ app.use(cors({
   origin: ['http://localhost:3000']
 }))
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '200mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '200mb', extended: true}))
 app.use(cookieParser());
 
 // Express View engine setup
@@ -76,5 +76,6 @@ app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
   res.sendFile(__dirname + "/public/index.html");
 });
+
 
 module.exports = app;

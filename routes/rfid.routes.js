@@ -51,7 +51,7 @@ router.put('/articulos/all', (req, res, next) => {
   })
 });
 
-router.put('/serials/all', (req, res, next) => {
+router.put('/seri^als/all', (req, res, next) => {
   const {serials} = req.body;
   const serialsDiv = serials.length/5;
   const serials1 = serials.slice(0,serialsDiv)
@@ -122,11 +122,6 @@ router.put('/serialslineaenvio/all', (req, res, next) => {
   const serialslineaenvio9 = serialslineaenvio.slice(arrLengthDiv3*8,arrLengthDiv3*9)
   const serialslineaenvio10 = serialslineaenvio.slice(arrLengthDiv3*9,arrLengthDiv3*10)
   console.log(serialslineaenvio.length, 'totl')
-  console.log(serialslineaenvio1.length)
-  console.log(serialslineaenvio2.length)
-  console.log(serialslineaenvio3.length)
-  console.log(serialslineaenvio4.length)
-  console.log(serialslineaenvio5.length)
   SerialsLineaEnvio.deleteMany({})
   .then(()=>{
     SerialsLineaEnvio.insertMany(serialslineaenvio1)
@@ -181,6 +176,7 @@ router.get(`/customer/:id/stock`,(req,res) =>{
   const id = req.params.id;
   SerialsModel.find({cliente_id: id})
   .then((tagsResponse)=>{
+    console.log(tagsResponse.length)
     Laundries.find()
     .then((laundriesResponse)=>{
       laundriesResponse.map((laundry)=>{

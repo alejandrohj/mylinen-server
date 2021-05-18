@@ -45,7 +45,7 @@ router.put('/articulos/all', (req, res, next) => {
   .then(()=>{
     Laundries.insertMany(articulos)
     .then((DBResponse)=>{
-      console.log('serials created succesfully')
+      console.log('articulos created succesfully')
       res.status(200).json(DBResponse.data);
     })
   })
@@ -90,7 +90,7 @@ router.put('/envios/all', (req, res, next) => {
   .then(()=>{
     EnvioModel.insertMany(envios)
     .then((DBResponse)=>{
-      console.log('serials created succesfully')
+      console.log('envios created succesfully')
       res.status(200).json(DBResponse.data);
     })
   })
@@ -103,7 +103,7 @@ router.put('/lineaenvio/all', (req, res, next) => {
   .then(()=>{
     LineaEnvioModel.insertMany(lineaenvio)
     .then((DBResponse)=>{
-      console.log('serials created succesfully')
+      console.log('lineenvio created succesfully')
       res.status(200).json(DBResponse.data);
     })
   })
@@ -155,7 +155,7 @@ router.put('/serialslineaenvio/all', (req, res, next) => {
                       SerialsLineaEnvio.insertMany(serialslineaenvio10)
                       .then((DBResponse)=>{
                         console.log('10')
-                        console.log('serials created succesfully')
+                        console.log('serials_lineaenvio created succesfully')
                         res.status(200).json(DBResponse.data);
                       })
                     })

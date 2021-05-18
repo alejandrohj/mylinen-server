@@ -3,7 +3,7 @@ const {Schema, model} = require('mongoose');
 const SerialslineaEnvioSchema = new Schema(
   {
     lineaenvio1_id: Number,
-    serials_id: Number
+    cantidad: Number
   },
   {
     timestamps: true

@@ -51,8 +51,9 @@ router.put('/articulos/all', (req, res, next) => {
   })
 });
 
-router.put('/seri^als/all', (req, res, next) => {
-  const {serials} = req.body;
+router.put('/serials/all', (req, res, next) => {
+  const {serials, cliente_serials} = req.body;
+
   const serialsDiv = serials.length/5;
   const serials1 = serials.slice(0,serialsDiv)
   const serials2 = serials.slice(serialsDiv,serialsDiv*2)
@@ -174,6 +175,7 @@ router.put('/serialslineaenvio/all', (req, res, next) => {
 router.get(`/customer/:id/stock`,(req,res) =>{
   let artArr = [];
   const id = req.params.id;
+  console.log(id)
   SerialsModel.find({cliente_id: id})
   .then((tagsResponse)=>{
     console.log(tagsResponse.length)
@@ -186,10 +188,46 @@ router.get(`/customer/:id/stock`,(req,res) =>{
             acumulator++;
           } 
         })
+        //Intentar incrementar el acumulador si encontramos tags en serials_cliente de ese cliente(id)
         let obt = {articulo: laundry.name, cantidad: acumulator}
         artArr.push(obt);
       })
       res.status(200).json(artArr);
+    })
+  })
+})
+
+router.get(`/customer/:id/envios`,(req,res) =>{
+  const id = req.params.id;
+  console.log(id)
+  EnvioModel.find({cliente_id: id})
+  .then((response)=>{
+    res.status(200).json(response);
+  })
+})
+
+router.get(`/customer/envio/:id`,(req,res) =>{
+  let articulos = [];
+  const id = req.params.id;
+  Laundries.find()
+  .then((laundries)=>{
+    EnvioModel.find({id: id})
+    .then((albresponse)=>{
+      LineaEnvioModel.find({envio_id:id})
+        .then((lineEnvioRes)=>{
+          lineEnvioRes.map((elem,i)=>{
+            SerialsLineaEnvio.find({lineaenvio1_id:elem.id})
+              .then((serialLineaEnvioRes)=>{
+                let articulo = {articulo: laundries.find(laundryelem => laundryelem.rfidid === elem.articulo_id), cantidad: serialLineaEnvioRes[0].cantidad};
+                articulos.push(articulo);
+                if(articulos.length === (lineEnvioRes.length)){
+                  let albaran = {envio: albresponse, serial: articulos}
+                  console.log(albaran)
+                  res.status(200).json(albaran)
+                }
+              })
+          })
+        })
     })
   })
 })

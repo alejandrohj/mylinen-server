@@ -36,7 +36,19 @@ router.get('/complexes',isLoggedIn,(req,res)=>{
 })
 
 router.get('/complex/:id/details',isLoggedIn,(req,res)=>{
+  console.log('gettin complex')
   ComplexModel.findById(req.params.id)
+  .populate({
+    path:'linen.laundry'
+  })
+    .then((complex)=>{
+      res.status(200).json(complex)
+    })
+})
+
+router.get('/complex/:id/details/byrfidid',isLoggedIn,(req,res)=>{
+  console.log('gettin complex')
+  ComplexModel.find({rfidId:req.params.id})
   .populate({
     path:'linen.laundry'
   })

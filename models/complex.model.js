@@ -25,6 +25,12 @@ const ComplexSchema = new Schema(
       enum: ['laundry','renting'],
       default: 'laundry'
     },
+    typeOfQuote: {
+      type: String,
+      enum: ['kilo','prenda']
+    },
+    klgPrice: Number,
+    AtipicalKlgPrice: Number,
     rfidId: Number
   },
   {

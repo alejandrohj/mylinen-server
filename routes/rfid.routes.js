@@ -8,6 +8,7 @@ const EnvioModel = require('../models/envio.model');
 const LineaEnvioModel = require('../models/lineaenvio.model');
 const SerialsLineaEnvio = require('../models/serials_lineaenvio');
 const Laundries = require('../models/laundry.model');
+const PesosModel =  require('../models/pesos.model');
 
 /* GET home page */
 router.put('/albaranes', (req, res, next) => {
@@ -170,6 +171,30 @@ router.put('/serialslineaenvio/all', (req, res, next) => {
   })
 });
 
+router.put('/pesos/all', (req, res, next) => {
+  const {bultos} = req.body;
+  console.log('saving pesos')
+  const bultosDiv = bultos.length/3;
+  const bultos1 = bultos.slice(0,bultosDiv)
+  const bultos2 = bultos.slice(bultosDiv,bultosDiv*2)
+  const bultos3 = bultos.slice(bultosDiv*2,bultosDiv*3)
+  res.status(200);
+  PesosModel.deleteMany({})
+  .then(()=>{
+    PesosModel.insertMany(bultos1)
+    .then((DBResponse)=>{
+      PesosModel.insertMany(bultos2)
+      .then((DBResponse)=>{
+        PesosModel.insertMany(bultos3)
+          .then((DBResponse)=>{
+            console.log('Pesos created succesfully')
+            res.status(200).json(DBResponse.data);
+          })
+      })
+    })
+  })
+});
+
 
 ///WEB CLIENT HTTP REQUESTS
 router.get(`/customer/:id/stock`,(req,res) =>{
@@ -245,6 +270,16 @@ router.get(`/customer/envio/:id`,(req,res) =>{
         })
     })
   })
+})
+
+
+
+router.get(`/pesos/envio/:id`,(req,res) =>{
+  const id = req.params.id;
+  PesosModel.find({envio_id:id})
+    .then((pesos)=>{
+      res.status(200).json(pesos);
+    })
 })
 
 module.exports = router;

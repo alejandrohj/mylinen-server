@@ -244,6 +244,19 @@ router.get(`/customer/:id/envios/:year/:month`,(req,res) =>{
   })
 })
 
+router.get(`/customer/envios/:year/:month`,(req,res) =>{
+  const {year,month} = req.params;
+  console.log(month,year);
+  let StartDate = new Date(`${year}-${month.padStart(2,0)}-01`);
+  let EndDate =new Date(`${year}-${month.padStart(2,0)}-31`);
+  console.log(StartDate,EndDate)
+  EnvioModel.find({fecha : { $gte:StartDate, $lte:EndDate}})
+  .then((response)=>{
+    console.log(response)
+    res.status(200).json(response);
+  })
+})
+
 
 
 router.get(`/customer/envio/:id`,(req,res) =>{

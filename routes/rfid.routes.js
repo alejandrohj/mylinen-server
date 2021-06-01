@@ -235,8 +235,11 @@ router.get(`/customer/:id/stock/bydate`,(req,res) =>{
         let currentlaundry = laundriesResponse.find((laundry)=>{
           return laundry.rfidid === tag.articulo_id;
         })
-        const tagByDate = {laundry: currentlaundry.name, fullDate:tag.fechaalta, day:tag.fechaalta.getDate(), month:tag.fechaalta.getMonth()+1 ,year:tag.fechaalta.getFullYear()};
+        const tagByDate = {laundry: currentlaundry.name, fullDate:tag.fechaalta, 
+          day:tag.fechaalta.getDate(), month:tag.fechaalta.getMonth()+1 ,year:tag.fechaalta.getFullYear(),
+          lavados: tag.nciclosrealizados};
         tagsByDateArr.push(tagByDate);
+        tagsByDateArr.sort((a,b)=> new Date(b.fullDate)-new Date(a.fullDate));
       })
       // for(let i=0; i<12; i++){
       //   let countByDate = tagsByDateArr.reduce((acc, currval)=>{

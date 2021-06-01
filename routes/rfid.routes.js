@@ -221,6 +221,36 @@ router.get(`/customer/:id/stock`,(req,res) =>{
     })
   })
 })
+router.get(`/customer/:id/stock/bydate`,(req,res) =>{
+  let tagsByDateArr = [];
+  let tagsByDateReducedArr = [];
+  const id = req.params.id;
+  console.log(id)
+  SerialsModel.find({cliente_id: id})
+  .then((tagsResponse)=>{
+    console.log(tagsResponse.length)
+    Laundries.find()
+    .then((laundriesResponse)=>{
+      tagsResponse.map((tag)=>{
+        let currentlaundry = laundriesResponse.find((laundry)=>{
+          return laundry.rfidid === tag.articulo_id;
+        })
+        const tagByDate = {laundry: currentlaundry.name, fullDate:tag.fechaalta, day:tag.fechaalta.getDate(), month:tag.fechaalta.getMonth()+1 ,year:tag.fechaalta.getFullYear()};
+        tagsByDateArr.push(tagByDate);
+      })
+      // for(let i=0; i<12; i++){
+      //   let countByDate = tagsByDateArr.reduce((acc, currval)=>{
+      //     if(currval.month==i){
+      //       return acc+1;
+      //     }
+      //   })
+      // }
+      res.status(200).json(tagsByDateArr)
+    })
+  })
+})
+
+
 
 router.get(`/customer/:id/envios`,(req,res) =>{
   const id = req.params.id;

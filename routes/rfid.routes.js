@@ -222,7 +222,7 @@ router.get(`/customer/:id/stock`,(req,res) =>{
   })
 })
 router.get(`/customer/:id/stock/bydate`,(req,res) =>{
-  req.setTimeout(60000);
+  req.setTimeout(500000);
   let tagsByDateArr = [];
   let tagsByDateReducedArr = [];
   const id = req.params.id;

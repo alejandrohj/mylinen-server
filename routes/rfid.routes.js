@@ -231,6 +231,7 @@ router.get(`/customer/:id/stock/bydate`,(req,res) =>{
     console.log(tagsResponse.length)
     Laundries.find()
     .then((laundriesResponse)=>{
+      console.log('stock by Date db requests done')
       tagsResponse.map((tag)=>{
         let currentlaundry = laundriesResponse.find((laundry)=>{
           return laundry.rfidid === tag.articulo_id;
@@ -241,6 +242,7 @@ router.get(`/customer/:id/stock/bydate`,(req,res) =>{
         tagsByDateArr.push(tagByDate);
         tagsByDateArr.sort((a,b)=> new Date(b.fullDate)-new Date(a.fullDate));
       })
+      console.log('stockBydateDone and pending to send to client')
       // for(let i=0; i<12; i++){
       //   let countByDate = tagsByDateArr.reduce((acc, currval)=>{
       //     if(currval.month==i){

@@ -39,6 +39,9 @@ app.use(cors({
   origin: ['http://localhost:3000']
 }))
 
+var server = app.listen();
+server.setTimeout(500000);
+
 app.use(bodyParser.json({limit: '200mb', extended: true}))
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}))
 app.use(cookieParser());

@@ -268,6 +268,7 @@ router.get(`/customer/envio/:id`,(req,res) =>{
     .then((albresponse)=>{
       LineaEnvioModel.find({envio_id:id})
         .then((lineEnvioRes)=>{
+          console.log(lineEnvioRes)
           lineEnvioRes.map((elem,i)=>{
             SerialsLineaEnvio.find({lineaenvio1_id:elem.id})
               .then((serialLineaEnvioRes)=>{

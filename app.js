@@ -40,7 +40,8 @@ app.use(cors({
 }))
 
 
-app.use(timeout(100000));
+var server = app.listen();
+server.setTimeout(5000000);
 
 
 app.use(bodyParser.json({limit: '200mb', extended: true}))

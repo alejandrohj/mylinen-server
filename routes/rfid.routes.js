@@ -66,9 +66,11 @@ router.put('/serials/all', (req, res, next) => {
   .then(()=>{
     SerialsModel.insertMany(serials1)
     .then((DBResponse)=>{
+      console.log('Some serials inserted')
       SerialsModel.insertMany(serials2)
       .then((DBResponse)=>{
         SerialsModel.insertMany(serials3)
+        console.log('half of serials created succesfully')
           .then((DBResponse)=>{
             SerialsModel.insertMany(serials4)
             .then((DBResponse)=>{
@@ -233,6 +235,7 @@ router.get(`/customer/:id/stock/bydate`,(req,res) =>{
     Laundries.find()
     .then((laundriesResponse)=>{
       console.log('stock by Date db requests done')
+      res.status(200);
       tagsResponse.map((tag)=>{
         let currentlaundry = laundriesResponse.find((laundry)=>{
           return laundry.rfidid === tag.articulo_id;

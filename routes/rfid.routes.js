@@ -311,6 +311,8 @@ router.get(`/customer/envio/:id`,(req,res) =>{
           lineEnvioRes.map((elem,i)=>{
             SerialsLineaEnvio.find({lineaenvio1_id:elem.id})
               .then((serialLineaEnvioRes)=>{
+                //Se repiten articulos con determinadas cantidades debido a lecturas por separado...
+                //Idea: Se podría recorer nuevamente el array articulos ir creando un clon y comparar.
                 let articulo = {articulo: laundries.find(laundryelem => laundryelem.rfidid === elem.articulo_id), cantidad: serialLineaEnvioRes[0].cantidad};
                 articulos.push(articulo);
                 if(articulos.length === (lineEnvioRes.length)){

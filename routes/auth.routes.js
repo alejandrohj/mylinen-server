@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const session      = require('express-session');
+const MongoStore   = require('connect-mongo')(session);
 
 const { isLoggedIn } = require('../helpers/auth-helper');
 
 const UserModel = require('../models/user.model');
+const SessionFeedModel = require('../models/allSessions.model');
 
 router.post('/signup', (req, res) => {
   const {userName, firstName, lastName, email, password, userType, complex, rfidComplexId} = req.body;
@@ -86,6 +89,7 @@ router.post('/signup', (req, res) => {
 
 router.post('/signin', (req, res) => {
   const {email, password} = req.body;
+  const today = new Date();
   if (!email) {
     res.status(500)
       .json({
@@ -118,9 +122,12 @@ router.post('/signin', (req, res) => {
             if (matches) {
               user.passwordHash = "***";
               req.session.loggedInUser = user;
-              console.log('Signin succes!', req.session)
-              console.log(user)
-              res.status(200).json(user);
+              SessionFeedModel.create({loggedInUserId: user._id, when: today})
+                .then((ses)=>{
+                  console.log('Signin succes!', req.session)
+                  console.log(user)
+                  res.status(200).json(user);
+                })
             }
             else {
               res.status(500)
@@ -197,5 +204,13 @@ router.put('/user/:id/disabled', isLoggedIn, (req, res) => {
     })
   })
 })
+
+router.get('/sessions/all', isLoggedIn, (req, res, next) => {
+  SessionFeedModel.find()
+  .populate('loggedInUserId')
+  .then((sessions)=>{
+    res.status(200).json(sessions)
+  });
+});
 
 module.exports = router;

@@ -69,8 +69,8 @@ router.put('/serials/all', (req, res, next) => {
       console.log('Some serials inserted')
       SerialsModel.insertMany(serials2)
       .then((DBResponse)=>{
-        SerialsModel.insertMany(serials3)
         console.log('half of serials created succesfully')
+        SerialsModel.insertMany(serials3)
           .then((DBResponse)=>{
             SerialsModel.insertMany(serials4)
             .then((DBResponse)=>{

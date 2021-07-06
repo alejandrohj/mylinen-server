@@ -9,6 +9,10 @@ const LineaEnvioModel = require('../models/lineaenvio.model');
 const SerialsLineaEnvio = require('../models/serials_lineaenvio');
 const Laundries = require('../models/laundry.model');
 const PesosModel =  require('../models/pesos.model');
+const ComplexModel = require('../models/complex.model');
+const ArchModel = require('../models/rfid.arc.model');
+const ShippingModel = require('../models/rfid.customer.shipping.model');
+const PackageModel = require('../models/package.model.js');
 
 /* GET home page */
 router.put('/albaranes', (req, res, next) => {
@@ -327,13 +331,97 @@ router.get(`/customer/envio/:id`,(req,res) =>{
   })
 })
 
-
-
 router.get(`/pesos/envio/:id`,(req,res) =>{
   const id = req.params.id;
   PesosModel.find({envio_id:id})
     .then((pesos)=>{
       res.status(200).json(pesos);
+    })
+})
+
+//CUSTOMER ARCH REQUESTS//////////////////////////
+
+router.put(`/package/new`,(req,res) =>{
+  const serialsReaded = [];
+  const serialsReadedToPackage = [];
+  const epcs = req.body.firstRead;
+  const shippingId = req.body.shippingId;
+  
+  ComplexModel.find()
+    .then((complexes)=>{
+      Laundries.find()
+        .then((laundries)=>{
+          SerialsModel.find({clave :{$in: epcs}})
+          .then((serials)=>{
+            const resultOfRead = epcs.length - serials.length;
+            serials.forEach((serial)=>{
+              const art = laundries.find((elem) => {
+                return elem.rfidid ===serial.articulo_id
+              });
+              const complex = complexes.find((elem)=>{
+                return elem.rfidId === serial.cliente_id;
+              })
+              const artName = art.name;
+              const complexName =complex.name;
+              serialsReadedToPackage.push({art});
+              serialsReaded.push({artName,complexName});
+              console.log(serialsReaded);
+            });
+            let serialsFiltered = Object.values(serialsReaded.reduce((a,{artName,complexName}) => {
+              let key = `${artName}_${complexName}`;
+              a[key] = a[key] || {count : 0, artName, complexName};
+              a[key].count++;
+              return a;
+            }, {}));
+            //Creamos el paquete:
+            const linen = [];
+            const serialFilteredWithId = serialsFiltered.map((serialx)=>{
+              const laundryId = laundries.find(l => l.name === serialx.artName);
+              const article = {laundrId: laundryId._id, amount: serialx.count}
+              return article
+            });
+            console.log(serialFilteredWithId, 'linentosave');
+            PackageModel.create({linen, shipping: shippingId,  estado: 'abierto'})
+            .then(()=>{
+              const dataReaded = [{serialsFiltered,resultOfRead}]; 
+              res.status(200).json(dataReaded);
+            })
+
+          })
+        })
+    })
+})
+
+router.post(`/rfid/shipping/new`,(req,res) =>{
+  const {arch} = req.body;
+  console.log(req.body)
+  console.log(arch)
+  ArchModel.find({archNumber: req.body[0]}) //C#
+  .then((result) =>{
+    const {_id, complex} = result[0];
+    ShippingModel.create({arch:_id, complex: complex})
+    .then((newShipping)=>{
+      res.status(200).json([newShipping]); //Array debido a C#
+    })
+  })
+})
+
+router.post(`/rfid/shipping/update`,(req,res) =>{
+  const {shippingId,numberOfPackages} = req.body;
+  console.log(req.body)
+  const fechacierre = new Date;
+  ShippingModel.findOneAndUpdate({_id: shippingId},{totalbultos:numberOfPackages, fechacierre: fechacierre, estado: 'cerrado'})
+  .then((shippingRes) =>{
+    res.status(200).json([shippingRes]);
+  })
+})
+
+router.post(`/rfid/arch/new/:id`,(req,res) =>{
+  const id = req.params.id;
+  const {archNumber} = req.body;
+  ArchModel.create({complex:id, archNumber: archNumber })
+    .then((arch)=>{
+      res.status(200).json(arch);
     })
 })
 

@@ -377,11 +377,11 @@ router.put(`/package/new`,(req,res) =>{
             const linen = [];
             const serialFilteredWithId = serialsFiltered.map((serialx)=>{
               const laundryId = laundries.find(l => l.name === serialx.artName);
-              const article = {laundrId: laundryId._id, amount: serialx.count}
+              const article = {laundry: laundryId._id, count: serialx.count}
               return article
             });
             console.log(serialFilteredWithId, 'linentosave');
-            PackageModel.create({linen, shipping: shippingId,  estado: 'abierto'})
+            PackageModel.create({linen:serialFilteredWithId, shipping: shippingId})
             .then(()=>{
               const dataReaded = [{serialsFiltered,resultOfRead}]; 
               res.status(200).json(dataReaded);
@@ -399,7 +399,7 @@ router.post(`/rfid/shipping/new`,(req,res) =>{
   ArchModel.find({archNumber: req.body[0]}) //C#
   .then((result) =>{
     const {_id, complex} = result[0];
-    ShippingModel.create({arch:_id, complex: complex})
+    ShippingModel.create({arch:_id, complex: complex, estado: 'abierto'})
     .then((newShipping)=>{
       res.status(200).json([newShipping]); //Array debido a C#
     })
@@ -422,6 +422,31 @@ router.post(`/rfid/arch/new/:id`,(req,res) =>{
   ArchModel.create({complex:id, archNumber: archNumber })
     .then((arch)=>{
       res.status(200).json(arch);
+    })
+})
+
+
+////GET CUSTOMER SHIPPINGS/////////////////////////
+router.get(`/rfid/customer/:id/shippings/all`,(req,res) =>{
+  const id = req.params.id;
+  ShippingModel.find({complex:id})
+    .then((shipping)=>{
+      res.status(200).json(shipping);
+    })
+})
+
+router.get(`/rfid/shipping/:id/details`,(req,res) =>{
+  const id = req.params.id;
+    ShippingModel.find({_id:id})
+    .populate('complex')
+    .then((shipping)=>{
+      PackageModel.find({shipping:id})
+      .populate({
+        path : 'linen.laundry'
+      })
+       .then((packages)=>{
+        res.status(200).json({shipping,packages});
+       });
     })
 })
 

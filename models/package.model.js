@@ -4,7 +4,7 @@ const PackageSchema = new Schema(
   { 
     linen: [
       {
-        laundryId: {
+        laundry: {
           type: Schema.Types.ObjectId,
           ref: 'laundry'
         },

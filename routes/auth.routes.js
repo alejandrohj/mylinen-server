@@ -10,7 +10,7 @@ const UserModel = require('../models/user.model');
 const SessionFeedModel = require('../models/allSessions.model');
 
 router.post('/signup', (req, res) => {
-  const {userName, firstName, lastName, email, password, userType, complex, rfidComplexId} = req.body;
+  const {userName, firstName, lastName, email, password, userType, complexes} = req.body;
   if (!userName) {
     res.status(500)
       .json({
@@ -56,9 +56,9 @@ router.post('/signup', (req, res) => {
     .then((salt) => {
       bcrypt.hash(password, salt)
           .then((passwordHash) => {
-            let complexId
-            complex?  complexId= complex._id : complexId =null;
-            UserModel.create({email, userName, firstName,lastName, passwordHash, userType, complex: complexId, rfidComplexId})
+            //let complexId
+            //complex?  complexId= complex._id : complexId =null;
+            UserModel.create({email, userName, firstName,lastName, passwordHash, userType, complexes})
               .then((user) => {
                 user.passwordHash = "***";
                 req.session.loggedInUser = user;
@@ -116,6 +116,7 @@ router.post('/signin', (req, res) => {
     }
 
     UserModel.findOne({email})
+      .populate('complexes')
       .then((user) => {
         bcrypt.compare(password, user.passwordHash)
           .then((matches) => {

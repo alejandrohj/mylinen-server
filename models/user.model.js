@@ -23,15 +23,14 @@ const UserSchema = new Schema(
     },
     userType: {
       type: String,
-      enum: ['gobernanta','empaquetador','admin','revisador','direccion']
+      enum: ['gobernanta','empaquetador','admin','revisador','direccion','superdireccion','compras','laundryadmin','superadmin']
     },
-    complex: {
-      type: Schema.Types.ObjectId,
-      ref: 'complex'
-    },
-    rfidComplexId: {
-      type: Number
-    },
+    complexes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'complex'
+      }
+    ],
     disable: {
       type: Boolean,
       default: false

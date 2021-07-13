@@ -71,8 +71,12 @@ app.use('/api', laundriesRoutes);
 
 const ordersRoutes = require('./routes/orders.routes')
 app.use('/api', ordersRoutes);
+
 const rfidRoutes = require('./routes/rfid.routes')
 app.use('/api', rfidRoutes);
+
+const managementRoutes = require('./routes/management.routes');
+app.use('/api', managementRoutes);
 
 const index = require('./routes/index');
 app.use('/', index);

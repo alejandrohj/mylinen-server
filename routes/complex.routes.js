@@ -8,9 +8,9 @@ const { isLoggedIn } = require('../helpers/auth-helper');
 
 router.post('/complex/create',isLoggedIn,(req,res)=>{
   console.log('complex')
-  const {name,adress,linen, services,rfidId, typeOfQuote,klgPrice} = req.body;
+  const {name,adress,linen, services,rfidId, typeOfQuote,klgPrice,gesId} = req.body;
   console.log(rfidId)
-  ComplexModel.create({name, adress, linen, services,rfidId, typeOfQuote,klgPrice})
+  ComplexModel.create({name, adress, linen, services,rfidId, typeOfQuote,klgPrice,gesId})
     .then((complex)=>{
       res.status(200).json(complex)
     }).catch((err) => {

@@ -31,7 +31,8 @@ const ComplexSchema = new Schema(
     },
     klgPrice: Number,
     AtipicalKlgPrice: Number,
-    rfidId: Number
+    rfidId: Number,
+    gesId: Number
   },
   {
     timestamps: true
